@@ -11,7 +11,7 @@ import {
 export interface IDynaNodeChannelBroadcasterConfig {
   dynaNodeChannelServiceAddress: string;
   channel: string;
-  accessKey: string;
+  accessToken: string;
 }
 
 export class DynaNodeChannelBroadcaster {
@@ -44,7 +44,7 @@ export class DynaNodeChannelBroadcaster {
       command: COMMAND_Post,
       args: {
         channel: this.config.channel,
-        accessKey: this.config.accessKey,
+        accessToken: this.config.accessToken,
       },
       binaryData,
       data: {

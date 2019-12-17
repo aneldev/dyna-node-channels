@@ -42,17 +42,9 @@ describe('DynaNodeFeederService', () => {
         serverDynaNodeAddress: 'n/localhost/33044',
         serviceConnectionId: 'feeder-service',
       },
-      broadcasters: {
-        systemUpdates: {
-          accessKey: '####sender-systemUpdates-key',
-          senderDynaNodeAddresses: [],
-        },
-      },
-      receivers: {
-        systemUpdates: {
-          accessKey: '####receiver-access-key',
-        },
-      },
+      onChannelRegister: async (channel, accessToken) => accessToken === '####at-registration',
+      onChannelUnregister: async (channel, accessToken) => accessToken === '####at-registration',
+      onChannelPost: async (channel, accessToken) => accessToken === '####at-post',
       onMessageQueueError: e => console.error(e),
       onServiceRegistrationFail: e => console.error(e),
     });
@@ -61,7 +53,7 @@ describe('DynaNodeFeederService', () => {
     broadcaster = new DynaNodeChannelBroadcaster({
       dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
       channel: 'systemUpdates',
-      accessKey: '####sender-systemUpdates-key',
+      accessToken: '####at-post',
     });
 
     done();
@@ -86,7 +78,7 @@ describe('DynaNodeFeederService', () => {
         const receiver = new DynaNodeChannelReceiver({
           dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
           channel: 'systemUpdates',
-          accessKey: '####receiver-access-key',
+          accessToken: '####at-registration',
           onMessage: message => {
             expect(message.headers.test).toBe(0);
             expect(message.args.test).toBe(1);

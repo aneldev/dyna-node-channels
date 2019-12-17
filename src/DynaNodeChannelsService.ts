@@ -6,8 +6,6 @@ import {
 import { IError } from "dyna-interfaces";
 
 export interface IDynaNodeFeederServiceConfig {
-  compressMessages?: boolean;                               // default: true
-
   parallelRequests?: number;                                // default: 5
 
   serviceRegistration?: {                                   // required to have public name (connaction id), otherwise it will have the guid connection id
@@ -30,44 +28,33 @@ export interface IDynaNodeFeederServiceConfig {
     delAll: () => Promise<void>;
   };
 
-  broadcasters: IBroadcastersConfig;                            // Configuration who can post
-  receivers: IReceiversConfig;                         // Configuration who can read
+  onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;
+  onChannelUnregister: (channel: string, accessToken: string) => Promise<boolean>;
+  onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;
 
   onServiceRegistrationFail: (error: IError) => void;                 // this is where the server doesn't allow the registration of this service or any other network error
   onMessageQueueError: (error: IError) => void;                       // if this happen is a hardware disk error!
-}
-
-export interface IBroadcastersConfig {
-  [channel: string]: {
-    accessKey: string;                        // Access key is required for broadcasters
-  };
-}
-
-export interface IReceiversConfig {
-  [channel: string]: {
-    accessKey?: string;                       // Channel would have no access key so they would open to everyone
-  };
 }
 
 export const COMMAND_RegisterReceiver = "COMMAND_RegisterReceiver";
 
 export interface ICOMMAND_RegisterReceiver_args {
   channel: string;
-  accessKey: string;
+  accessToken: string;
 }
 
 export const COMMAND_UnregisterReceiver = "COMMAND_UnregisterReceiver";
 
 export interface ICOMMAND_UnregisterReceiver_args {
   channel: string;
-  accessKey: string;
+  accessToken: string;
 }
 
 export const COMMAND_Post = "COMMAND_Post";
 
 export interface ICOMMAND_Post_args {
   channel: string;
-  accessKey: string;
+  accessToken: string;
 }
 
 export interface ICOMMAND_Post_data {
@@ -93,135 +80,166 @@ export class DynaNodeChannelsService {
   private receivers: IReceivers = {};
 
   constructor(private readonly config: IDynaNodeFeederServiceConfig) {
+    this.init();
+  }
+
+  private init(): void {
+    const {
+      onChannelPost,
+      onChannelRegister,
+      onChannelUnregister,
+    } = this.config;
+
     this.service = new DynaNodeService({
-      ...config,
+      parallelRequests: this.config.parallelRequests,
+      serviceRegistration: this.config.serviceRegistration,
+      prefixServiceConnectionId: this.config.prefixServiceConnectionId,
+      disk: this.config.disk,
+      onServiceRegistrationFail: this.config.onServiceRegistrationFail,
+      onMessageQueueError: this.config.onMessageQueueError,
+
       publicCommands: [
         COMMAND_Post,
         COMMAND_RegisterReceiver,
         COMMAND_UnregisterReceiver,
       ],
+
       onCommand: {
+
         [COMMAND_RegisterReceiver]: {
-          execute: ({ message, reply, next }) => {
+          execute: async ({message, reply, next}) => {
             const {
               from: receiverAddress,
               args: {
                 channel,
-                accessKey,
+                accessToken,
               }
             } = message;
 
-            if (!this.config.receivers[channel]) {
+            let valid = false;
+            let error_: any;
+
+            try {
+              valid = await onChannelRegister(channel, accessToken);
+            } catch (e) {
+              error_ = e;
+            }
+
+            if (error_) {
               reply({
-                command: 'error/404',
+                command: 'error',
                 data: {
-                  message: `Channel not found [${channel}]`,
+                  code: 1912172010,
+                  message: 'Internal error onChannelRegister'
                 } as IError,
-              });
+              }).catch(() => undefined);
               next();
               return;
             }
 
-            const channelAccessKey = this.config.receivers[channel].accessKey;
-            if (channelAccessKey && channelAccessKey !== accessKey) {
-              reply({
-                command: 'error/403',
-                data: {
-                  message: `Access denied for channel [${channel}], wrong access key`,
-                } as IError,
+            if (valid) {
+              if (!this.receivers[channel]) this.receivers[channel] = [];
+              this.receivers[channel].push({
+                receiverAddress,
               });
-              next();
-              return;
+              reply({command: 'ok'}).catch(() => undefined);
+            }
+            else {
+              reply({command: 'error/403'}).catch(() => undefined);
             }
 
-            if (!this.receivers[channel]) this.receivers[channel] = [];
-            this.receivers[channel].push({
-              receiverAddress,
-            });
-
-            reply({ command: 'ok' }).catch(() => undefined);
             next();
           },
         } as IDynaNodeServiceCommandConfig<ICOMMAND_RegisterReceiver_args, null>,
+
         [COMMAND_UnregisterReceiver]: {
-          execute: ({ message, reply, next }) => {
+          execute: async ({message, reply, next}) => {
             const {
               from: receiverAddress,
               args: {
                 channel,
-                accessKey,
+                accessToken,
               }
             } = message;
 
-            if (!this.config.receivers[channel]) {
+            let valid = false;
+            let error_: any;
+
+            try {
+              valid = await onChannelUnregister(channel, accessToken);
+            } catch (e) {
+              error_ = e;
+            }
+
+            if (error_) {
               reply({
-                command: 'error/404',
+                command: 'error',
                 data: {
-                  message: `Channel not found [${channel}]`,
+                  code: 1912172011,
+                  message: 'Internal error onChannelUnregister'
                 } as IError,
-              });
+              }).catch(() => undefined);
               next();
               return;
             }
 
-            const channelAccessKey = this.config.receivers[channel].accessKey;
-            if (channelAccessKey && channelAccessKey !== accessKey) {
-              reply({
-                command: 'error/403',
-                data: {
-                  message: `Access denied for channel [${channel}], wrong access key`,
-                } as IError,
-              });
-              next();
-              return;
+            if (valid) {
+              if (!this.receivers[channel]) this.receivers[channel] = [];
+              this.receivers[channel] =
+                this.receivers[channel]
+                  .filter(receiver => receiver.receiverAddress !== receiverAddress);
+              reply({command: 'ok'}).catch(() => undefined);
+            }
+            else {
+              reply({command: 'error/403'}).catch(() => undefined);
             }
 
-            if (!this.receivers[channel]) this.receivers[channel] = [];
-            this.receivers[channel] =
-              this.receivers[channel]
-                .filter(receiver => receiver.receiverAddress !== receiverAddress);
-
-            reply({ command: 'ok' }).catch(() => undefined);
             next();
           },
         } as IDynaNodeServiceCommandConfig<ICOMMAND_UnregisterReceiver_args, null>,
+
         [COMMAND_Post]: {
-          execute: ({ message, reply, next }) => {
+          execute: async ({message, reply, next}) => {
             const {
-              from: sender,
               args: {
                 channel,
-                accessKey,
-              },
+                accessToken,
+              }
             } = message;
 
-            if (!this.config.broadcasters[channel]) {
+            let valid = false;
+            let error_: any;
+
+            try {
+              valid = await onChannelPost(channel, accessToken);
+            } catch (e) {
+              error_ = e;
+            }
+
+            if (error_) {
               reply({
-                command: 'error/404',
+                command: 'error',
                 data: {
-                  message: `Channel not found [${channel}]`,
+                  code: 1912172011,
+                  message: 'Internal error onChannelPost'
                 } as IError,
-              });
+              }).catch(() => undefined);
               next();
               return;
             }
 
-            if (this.config.broadcasters[channel].accessKey !== accessKey) {
-              reply({
-                command: 'error/403',
-                data: {
-                  message: `Access denied for channel [${channel}], wrong access key`,
-                } as IError,
-              });
-              next();
-              return;
+            if (valid) {
+              reply({command: 'ok'}).catch(() => undefined);
+              this.sendFeed(message);
+            }
+            else {
+              reply({command: 'error/403'}).catch(() => undefined);
             }
 
-            reply({ command: 'ok' }).catch(() => undefined);
-            this.sendFeed(message);
             next();
           },
         } as IDynaNodeServiceCommandConfig<ICOMMAND_Post_args, ICOMMAND_Post_data>,
+
       },
     });
   }

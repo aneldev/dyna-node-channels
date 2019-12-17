@@ -15,17 +15,9 @@ The channels service
         serverDynaNodeAddress: 'n/localhost/33044',
         serviceConnectionId: 'feeder-service',
       },
-      broadcasters: {
-        footballGame: {
-          accessKey: '####sender-footballGame-key',
-          senderDynaNodeAddresses: [],  // empty to give access to all broadcaster simply using the access key
-        },
-      },
-      receivers: {
-        footballGame: {
-          accessKey: '####receiver-access-key',
-        },
-      },
+      onChannelRegister: async (channel, accessToken) => accessToken === '####at-registration',
+      onChannelUnregister: async (channel, accessToken) => accessToken === '####at-registration',
+      onChannelPost: async (channel, accessToken) => accessToken === '####at-post',
       onMessageQueueError: e => console.error(e),
       onServiceRegistrationFail: e => console.error(e),
     });
@@ -39,7 +31,7 @@ Create a broadcaster instance that will push messages to the channel
     broadcaster = new DynaNodeChannelBroadcaster({
       dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
       channel: 'footballGame',
-      accessKey: '####sender-footballGame-key',
+      accessToken: '####at-post',
     });
 ```
 
@@ -52,13 +44,13 @@ and send messages to the channel like this:
     })
 ```
 
-And this is the receiver that 
+And this is the receiver that will receive the messages
 
 ```
     const receiver = new DynaNodeChannelReceiver({
       dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
       channel: 'footballGame',
-      accessKey: '####receiver-access-key',
+      accessToken: '####at-registration',
       onMessage: message => {
         const {
             data: {         // here we have the data posted to the channel

@@ -12,7 +12,7 @@ import {
 export interface IDynaNodeChannelReceiverConfig {
   dynaNodeChannelServiceAddress: string;
   channel: string;
-  accessKey: string;
+  accessToken: string;
   onMessage: (message: DynaNodeMessage) => void;
 }
 
@@ -31,7 +31,7 @@ export class DynaNodeChannelReceiver {
       command: COMMAND_RegisterReceiver,
       args: {
         channel: this.config.channel,
-        accessKey: this.config.accessKey,
+        accessToken: this.config.accessToken,
       },
     });
     if (response.command !== 'ok') {
@@ -45,7 +45,7 @@ export class DynaNodeChannelReceiver {
       command: COMMAND_UnregisterReceiver,
       args: {
         channel: this.config.channel,
-        accessKey: this.config.accessKey,
+        accessToken: this.config.accessToken,
       },
     });
     await this.client.stopConnections();
