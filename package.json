@@ -1,10 +1,10 @@
 {
   "name": "dyna-node-channels-service",
   "version": "0.0.1",
-  "description": "The dyna-node-channels-service",
+  "description": "A channels service based on Dyna Node network layer",
   "repository": {
     "type": "git",
-    "url": "http://github.com/aneldev/dyna-node-channels-service"
+    "url": "http://github.com/aneldev/dyna-node-channels"
   },
   "sideEffects": false,
   "source": "src/index.ts",
