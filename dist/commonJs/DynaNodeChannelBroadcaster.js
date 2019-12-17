@@ -57,7 +57,7 @@ var DynaNodeChannelBroadcaster = /** @class */ (function () {
                             command: DynaNodeChannelsService_1.COMMAND_Post,
                             args: {
                                 channel: this.config.channel,
-                                accessKey: this.config.accessKey,
+                                accessToken: this.config.accessToken,
                             },
                             binaryData: binaryData,
                             data: {

@@ -1,6 +1,5 @@
 import { IError } from "dyna-interfaces";
 export interface IDynaNodeFeederServiceConfig {
-    compressMessages?: boolean;
     parallelRequests?: number;
     serviceRegistration?: {
         serverDynaNodeAddress: string;
@@ -19,36 +18,26 @@ export interface IDynaNodeFeederServiceConfig {
         del: (key: string) => Promise<void>;
         delAll: () => Promise<void>;
     };
-    broadcasters: ISendersConfig;
-    receivers: IReceiversConfig;
+    onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;
+    onChannelUnregister: (channel: string, accessToken: string) => Promise<boolean>;
+    onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;
     onServiceRegistrationFail: (error: IError) => void;
     onMessageQueueError: (error: IError) => void;
-}
-export interface ISendersConfig {
-    [channel: string]: {
-        accessKey: string;
-        senderDynaNodeAddresses: string[];
-    };
-}
-export interface IReceiversConfig {
-    [channel: string]: {
-        accessKey: string;
-    };
 }
 export declare const COMMAND_RegisterReceiver = "COMMAND_RegisterReceiver";
 export interface ICOMMAND_RegisterReceiver_args {
     channel: string;
-    accessKey: string;
+    accessToken: string;
 }
 export declare const COMMAND_UnregisterReceiver = "COMMAND_UnregisterReceiver";
 export interface ICOMMAND_UnregisterReceiver_args {
     channel: string;
-    accessKey: string;
+    accessToken: string;
 }
 export declare const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {
     channel: string;
-    accessKey: string;
+    accessToken: string;
 }
 export interface ICOMMAND_Post_data {
     headers?: any;
@@ -70,6 +59,7 @@ export declare class DynaNodeChannelsService {
     private service;
     private receivers;
     constructor(config: IDynaNodeFeederServiceConfig);
+    private init;
     start(): Promise<void>;
     stop(): Promise<void>;
     get stats(): IStats;

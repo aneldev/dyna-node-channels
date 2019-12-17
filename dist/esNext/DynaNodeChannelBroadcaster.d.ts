@@ -2,7 +2,7 @@
 export interface IDynaNodeChannelBroadcasterConfig {
     dynaNodeChannelServiceAddress: string;
     channel: string;
-    accessKey: string;
+    accessToken: string;
 }
 export declare class DynaNodeChannelBroadcaster {
     private readonly config;

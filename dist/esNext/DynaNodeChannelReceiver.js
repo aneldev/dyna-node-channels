@@ -53,7 +53,7 @@ var DynaNodeChannelReceiver = /** @class */ (function () {
                             command: COMMAND_RegisterReceiver,
                             args: {
                                 channel: this.config.channel,
-                                accessKey: this.config.accessKey,
+                                accessToken: this.config.accessToken,
                             },
                         })];
                     case 1:
@@ -75,7 +75,7 @@ var DynaNodeChannelReceiver = /** @class */ (function () {
                             command: COMMAND_UnregisterReceiver,
                             args: {
                                 channel: this.config.channel,
-                                accessKey: this.config.accessKey,
+                                accessToken: this.config.accessToken,
                             },
                         })];
                     case 1:
