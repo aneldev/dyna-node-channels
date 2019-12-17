@@ -1,6 +1,6 @@
 import "jest";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 2000;
 
 import {
   DynaNodeServer,
@@ -83,33 +83,42 @@ describe('DynaNodeFeederService', () => {
         expect(message.args.test).toBe(1);
         expect(message.data.test).toBe(2);
         expect(message.command).toBe('test');
-        receiver.stop().catch(fail).then(done);
+
+        expect(channelsService.stats.receivers.systemUpdates.length).toBe(1);
+        receiver.stop()
+          .then(() => expect(channelsService.stats.receivers.systemUpdates.length).toBe(0))
+          .catch(fail)
+          .then(done);
       }
     });
 
+    expect(channelsService.stats.receivers.systemUpdates).toBe(undefined);
+
     await receiver.start()
-      .catch(error => console.error('Receiver cannot start', error.data.replyMessage));
+      .catch(error => fail({message: 'Receiver cannot start', error: error.data.replyMessage}));
+
+    expect(channelsService.stats.receivers.systemUpdates.length).toBe(1);
 
     broadcaster.send({
-      headers: { test: 0 },
-      args: { test: 1 },
+      headers: {test: 0},
+      args: {test: 1},
       command: 'test',
-      data: { test: 2 }
+      data: {test: 2}
     })
-      .catch(error => console.error('Broadcaster cannot send', error.data.replyMessage))
+      .catch(error => fail({message: 'Broadcaster cannot send', error: error.data.replyMessage}))
       .then(() => done());
   });
 
   it(`broadcasts one message to 5 receivers`, async (done) => {
-    const testReceivers = 5;
+    const RECEIVERS_COUNT = 5;
     let receives = 0;
     const checkAndExit = () => {
       receives++;
-      if (receives === testReceivers) done();
+      if (receives === RECEIVERS_COUNT) done();
     };
 
-    await Promise.all([
-      Array(testReceivers).fill(null).map(() => {
+    await Promise.all(
+      Array(RECEIVERS_COUNT).fill(null).map(() => {
         const receiver = new DynaNodeChannelReceiver({
           dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
           channel: 'systemUpdates',
@@ -123,17 +132,17 @@ describe('DynaNodeFeederService', () => {
           }
         });
         return receiver.start()
-          .catch(error => fail({ message: 'Receiver cannot start', error: error.data.replyMessage }));
+          .catch(error => fail({message: 'Receiver cannot start', error: error.data.replyMessage}));
       })
-    ]);
+    );
 
     broadcaster.send({
-      headers: { test: 0 },
-      args: { test: 1 },
+      headers: {test: 0},
+      args: {test: 1},
       command: 'test',
-      data: { test: 2 }
+      data: {test: 2}
     })
-      .catch(error => fail({ message: 'Broadcaster cannot send', error: error.data.replyMessage }));
+      .catch(error => fail({message: 'Broadcaster cannot send', error: error.data.replyMessage}));
   });
 
   it('removes the listener with lost connection (that is not unregistered properly)', async (done) => {
@@ -151,17 +160,17 @@ describe('DynaNodeFeederService', () => {
     });
 
     await receiver.start()
-      .catch(error => fail({ message: 'Receiver cannot start', error: error.data.replyMessage }));
+      .catch(error => fail({message: 'Receiver cannot start', error: error.data.replyMessage}));
 
     expect(channelsService.stats.receivers.systemUpdates.length).toBe(1);
 
     await broadcaster.send({
-      headers: { test: 0 },
-      args: { test: 1 },
+      headers: {test: 0},
+      args: {test: 1},
       command: 'test',
-      data: { test: 2 }
+      data: {test: 2}
     })
-      .catch(error => fail({ message: 'Broadcaster cannot send', error: error.data.replyMessage }));
+      .catch(error => fail({message: 'Broadcaster cannot send', error: error.data.replyMessage}));
 
     // HACK it --- change the address so the receiver will look like the connection is lost
     const address = (channelsService as any).receivers.systemUpdates[0].receiverAddress;
@@ -170,12 +179,12 @@ describe('DynaNodeFeederService', () => {
     expect(channelsService.stats.receivers.systemUpdates.length).toBe(1);
 
     await broadcaster.send({
-      headers: { test: 0, testMode: true },
-      args: { test: 1 },
+      headers: {test: 0, testMode: true},
+      args: {test: 1},
       command: 'test',
-      data: { test: 2 }
+      data: {test: 2}
     })
-      .catch(error => fail({ message: 'Broadcaster cannot send', error: error.data.replyMessage }));
+      .catch(error => fail({message: 'Broadcaster cannot send', error: error.data.replyMessage}));
 
     await new Promise(r => setTimeout(r, 600));
 

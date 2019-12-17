@@ -30,23 +30,22 @@ export interface IDynaNodeFeederServiceConfig {
     delAll: () => Promise<void>;
   };
 
-  broadcasters: ISendersConfig;                            // Configuration who can post
+  broadcasters: IBroadcastersConfig;                            // Configuration who can post
   receivers: IReceiversConfig;                         // Configuration who can read
 
   onServiceRegistrationFail: (error: IError) => void;                 // this is where the server doesn't allow the registration of this service or any other network error
   onMessageQueueError: (error: IError) => void;                       // if this happen is a hardware disk error!
 }
 
-export interface ISendersConfig {
+export interface IBroadcastersConfig {
   [channel: string]: {
-    accessKey: string;
-    senderDynaNodeAddresses: string[];
+    accessKey: string;                        // Access key is required for broadcasters
   };
 }
 
 export interface IReceiversConfig {
   [channel: string]: {
-    accessKey: string;
+    accessKey?: string;                       // Channel would have no access key so they would open to everyone
   };
 }
 
@@ -123,7 +122,8 @@ export class DynaNodeChannelsService {
               return;
             }
 
-            if (this.config.receivers[channel].accessKey !== accessKey) {
+            const channelAccessKey = this.config.receivers[channel].accessKey;
+            if (channelAccessKey && channelAccessKey !== accessKey) {
               reply({
                 command: 'error/403',
                 data: {
@@ -164,7 +164,8 @@ export class DynaNodeChannelsService {
               return;
             }
 
-            if (this.config.receivers[channel].accessKey !== accessKey) {
+            const channelAccessKey = this.config.receivers[channel].accessKey;
+            if (channelAccessKey && channelAccessKey !== accessKey) {
               reply({
                 command: 'error/403',
                 data: {
@@ -216,20 +217,6 @@ export class DynaNodeChannelsService {
               return;
             }
 
-            if (
-              this.config.broadcasters[channel].senderDynaNodeAddresses.length
-              && this.config.broadcasters[channel].senderDynaNodeAddresses.indexOf(sender) > -1
-            ) {
-              reply({
-                command: 'error/403',
-                data: {
-                  message: `Access denied for channel [${channel}], you are not in senderDynaNodeAddresses list`,
-                } as IError,
-              });
-              next();
-              return;
-            }
-
             reply({ command: 'ok' }).catch(() => undefined);
             this.sendFeed(message);
             next();
@@ -272,7 +259,6 @@ export class DynaNodeChannelsService {
     if (!this.receivers[channel]) return; // exit, nobody is registerd so far
 
     this.receivers[channel].concat().forEach(receiver => {
-      console.debug('sending message to', testMode, receiver.receiverAddress);
       this.service.send({
         headers: {
           ...headers,
@@ -287,9 +273,7 @@ export class DynaNodeChannelsService {
         data,
         binaryData,
       })
-        .then(() => console.debug('send success'))
         .catch((error: IError) => {
-          console.debug('send failed', error);
           if (error.code === 133.144) {
             // Remove the listener, it doesn't exist anymore
             console.debug('removing listener', receiver.receiverAddress);
