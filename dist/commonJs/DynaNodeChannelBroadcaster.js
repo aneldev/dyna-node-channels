@@ -41,7 +41,9 @@ var DynaNodeChannelsService_1 = require("./DynaNodeChannelsService");
 var DynaNodeChannelBroadcaster = /** @class */ (function () {
     function DynaNodeChannelBroadcaster(config) {
         this.config = config;
-        this.client = new node_1.DynaNodeClient();
+        this.client = new node_1.DynaNodeClient({
+            onMessage: function (message) { return console.warn('DynaNodeChannelBroadcaster, receive of unexpected message that probably is an error', message); },
+        });
     }
     DynaNodeChannelBroadcaster.prototype.stop = function () {
         return this.client.stopConnections();

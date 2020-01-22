@@ -15,7 +15,9 @@ export interface IDynaNodeChannelBroadcasterConfig {
 }
 
 export class DynaNodeChannelBroadcaster {
-  private client = new DynaNodeClient();
+  private client = new DynaNodeClient({
+    onMessage: message => console.warn('DynaNodeChannelBroadcaster, receive of unexpected message that probably is an error', message),
+  });
 
   constructor(private readonly config: IDynaNodeChannelBroadcasterConfig) {
   }
