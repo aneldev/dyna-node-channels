@@ -42,7 +42,7 @@ var DynaNodeChannelBroadcaster = /** @class */ (function () {
     function DynaNodeChannelBroadcaster(config) {
         this.config = config;
         this.client = new node_1.DynaNodeClient({
-            onMessage: function (message) { return console.warn('DynaNodeChannelBroadcaster, receive of unexpected message that probably is an error', message); },
+            onMessage: function (message) { return console.warn('DynaNodeChannelBroadcaster, 202001201930, received an unexpected message that probably is an error', message); },
         });
     }
     DynaNodeChannelBroadcaster.prototype.stop = function () {
