@@ -39,7 +39,9 @@ import { COMMAND_Post, } from "./DynaNodeChannelsService";
 var DynaNodeChannelBroadcaster = /** @class */ (function () {
     function DynaNodeChannelBroadcaster(config) {
         this.config = config;
-        this.client = new DynaNodeClient();
+        this.client = new DynaNodeClient({
+            onMessage: function (message) { return console.warn('DynaNodeChannelBroadcaster, receive of unexpected message that probably is an error', message); },
+        });
     }
     DynaNodeChannelBroadcaster.prototype.stop = function () {
         return this.client.stopConnections();
