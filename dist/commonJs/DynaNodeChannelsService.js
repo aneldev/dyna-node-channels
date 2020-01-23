@@ -243,7 +243,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
     });
     DynaNodeChannelsService.prototype.sendFeed = function (message) {
         var _this = this;
-        var sender = message.from, channel = message.args.channel, _a = message.data, headers = _a.headers, args = _a.args, command = _a.command, data = _a.data, binaryData = message.binaryData;
+        var sender = message.from, channel = message.args.channel, _a = message.data, _b = _a.headers, headers = _b === void 0 ? {} : _b, args = _a.args, command = _a.command, data = _a.data, binaryData = message.binaryData;
         var testMode = !!headers.testMode;
         if (!this.receivers[channel])
             return; // exit, nobody is registerd so far

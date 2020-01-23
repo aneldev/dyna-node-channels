@@ -265,7 +265,7 @@ export class DynaNodeChannelsService {
         channel,
       },
       data: {
-        headers,
+        headers = {},
         args,
         command,
         data,
