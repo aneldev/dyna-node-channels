@@ -1,5 +1,5 @@
 import { IError } from "dyna-interfaces";
-export interface IDynaNodeFeederServiceConfig {
+export interface IDynaNodeChannelsServiceConfig {
     parallelRequests?: number;
     serviceRegistration?: {
         serverDynaNodeAddress: string;
@@ -7,10 +7,6 @@ export interface IDynaNodeFeederServiceConfig {
         encryptionKey: string;
         accessKey: string;
         requestExpirationInMinutes?: number;
-    };
-    prefixServiceConnectionId?: {
-        serverDynaNodeAddress: string;
-        prefix: string;
     };
     disk: {
         set: (key: string, data: any) => Promise<void>;
@@ -38,6 +34,7 @@ export declare const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {
     channel: string;
     accessToken: string;
+    respond?: boolean;
 }
 export interface ICOMMAND_Post_data {
     headers?: any;
@@ -58,7 +55,7 @@ export declare class DynaNodeChannelsService {
     private readonly config;
     private service;
     private receivers;
-    constructor(config: IDynaNodeFeederServiceConfig);
+    constructor(config: IDynaNodeChannelsServiceConfig);
     private init;
     start(): Promise<void>;
     stop(): Promise<void>;

@@ -58,6 +58,7 @@ var DynaNodeChannelBroadcaster = /** @class */ (function () {
                             args: {
                                 channel: this.config.channel,
                                 accessToken: this.config.accessToken,
+                                respond: true,
                             },
                             binaryData: binaryData,
                             data: {

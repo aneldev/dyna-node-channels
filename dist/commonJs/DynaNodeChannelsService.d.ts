@@ -34,7 +34,7 @@ export declare const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {
     channel: string;
     accessToken: string;
-    respond: boolean;
+    respond?: boolean;
 }
 export interface ICOMMAND_Post_data {
     headers?: any;
