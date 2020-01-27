@@ -5,7 +5,7 @@ import {
 } from "dyna-node/dist/commonJs/node";
 import { IError } from "dyna-interfaces";
 
-export interface IDynaNodeFeederServiceConfig {
+export interface IDynaNodeChannelsServiceConfig {
   parallelRequests?: number;                                // default: 5
 
   serviceRegistration?: {                                   // required to have public name (connaction id), otherwise it will have the guid connection id
@@ -14,11 +14,6 @@ export interface IDynaNodeFeederServiceConfig {
     encryptionKey: string;
     accessKey: string;
     requestExpirationInMinutes?: number;                    // default: 0.5 min
-  };
-
-  prefixServiceConnectionId?: {
-    serverDynaNodeAddress: string;                          // required for prefixing, this is used from services without serviceRegistration, these are the worker services
-    prefix: string;
   };
 
   disk: {                                                   // physical or virtual disk access
@@ -55,6 +50,7 @@ export const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {
   channel: string;
   accessToken: string;
+  respond?: boolean;       // default: false, Respond with the luck of the requers, commands ok/error will be responded
 }
 
 export interface ICOMMAND_Post_data {
@@ -79,7 +75,7 @@ export class DynaNodeChannelsService {
   private service: DynaNodeService;
   private receivers: IReceivers = {};
 
-  constructor(private readonly config: IDynaNodeFeederServiceConfig) {
+  constructor(private readonly config: IDynaNodeChannelsServiceConfig) {
     this.init();
   }
 
@@ -93,7 +89,6 @@ export class DynaNodeChannelsService {
     this.service = new DynaNodeService({
       parallelRequests: this.config.parallelRequests,
       serviceRegistration: this.config.serviceRegistration,
-      prefixServiceConnectionId: this.config.prefixServiceConnectionId,
       disk: this.config.disk,
       onServiceRegistrationFail: this.config.onServiceRegistrationFail,
       onMessageQueueError: this.config.onMessageQueueError,
@@ -204,6 +199,7 @@ export class DynaNodeChannelsService {
               args: {
                 channel,
                 accessToken,
+                respond = false,
               }
             } = message;
 
@@ -217,7 +213,7 @@ export class DynaNodeChannelsService {
             }
 
             if (error_) {
-              reply({
+              if (respond) reply({
                 command: 'error',
                 data: {
                   code: 1912172011,
@@ -229,11 +225,11 @@ export class DynaNodeChannelsService {
             }
 
             if (valid) {
-              reply({command: 'ok'}).catch(() => undefined);
+              if (respond) reply({command: 'ok'}).catch(() => undefined);
               this.sendFeed(message);
             }
             else {
-              reply({command: 'error/403'}).catch(() => undefined);
+              if (respond) reply({command: 'error/403'}).catch(() => undefined);
             }
 
             next();

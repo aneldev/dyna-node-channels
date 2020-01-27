@@ -1,6 +1,6 @@
 export {
   DynaNodeChannelsService,
-  IDynaNodeFeederServiceConfig,
+  IDynaNodeChannelsServiceConfig,
   COMMAND_Post,
   ICOMMAND_Post_args,
   ICOMMAND_Post_data,

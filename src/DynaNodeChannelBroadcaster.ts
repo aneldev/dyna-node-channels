@@ -47,6 +47,7 @@ export class DynaNodeChannelBroadcaster {
       args: {
         channel: this.config.channel,
         accessToken: this.config.accessToken,
+        respond: true,
       },
       binaryData,
       data: {

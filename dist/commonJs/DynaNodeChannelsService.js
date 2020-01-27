@@ -64,7 +64,6 @@ var DynaNodeChannelsService = /** @class */ (function () {
         this.service = new node_1.DynaNodeService({
             parallelRequests: this.config.parallelRequests,
             serviceRegistration: this.config.serviceRegistration,
-            prefixServiceConnectionId: this.config.prefixServiceConnectionId,
             disk: this.config.disk,
             onServiceRegistrationFail: this.config.onServiceRegistrationFail,
             onMessageQueueError: this.config.onMessageQueueError,
@@ -180,11 +179,11 @@ var DynaNodeChannelsService = /** @class */ (function () {
                     execute: function (_a) {
                         var message = _a.message, reply = _a.reply, next = _a.next;
                         return __awaiter(_this, void 0, void 0, function () {
-                            var _b, channel, accessToken, valid, error_, e_3;
+                            var _b, channel, accessToken, respond, valid, error_, e_3;
                             return __generator(this, function (_c) {
                                 switch (_c.label) {
                                     case 0:
-                                        _b = message.args, channel = _b.channel, accessToken = _b.accessToken;
+                                        _b = message.args, channel = _b.channel, accessToken = _b.accessToken, respond = _b.respond;
                                         valid = false;
                                         _c.label = 1;
                                     case 1:
@@ -199,22 +198,25 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                         return [3 /*break*/, 4];
                                     case 4:
                                         if (error_) {
-                                            reply({
-                                                command: 'error',
-                                                data: {
-                                                    code: 1912172011,
-                                                    message: 'Internal error onChannelPost'
-                                                },
-                                            }).catch(function () { return undefined; });
+                                            if (respond)
+                                                reply({
+                                                    command: 'error',
+                                                    data: {
+                                                        code: 1912172011,
+                                                        message: 'Internal error onChannelPost'
+                                                    },
+                                                }).catch(function () { return undefined; });
                                             next();
                                             return [2 /*return*/];
                                         }
                                         if (valid) {
-                                            reply({ command: 'ok' }).catch(function () { return undefined; });
+                                            if (respond)
+                                                reply({ command: 'ok' }).catch(function () { return undefined; });
                                             this.sendFeed(message);
                                         }
                                         else {
-                                            reply({ command: 'error/403' }).catch(function () { return undefined; });
+                                            if (respond)
+                                                reply({ command: 'error/403' }).catch(function () { return undefined; });
                                         }
                                         next();
                                         return [2 /*return*/];

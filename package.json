@@ -52,7 +52,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "dyna-node": "^0.7.68"
+    "dyna-node": "^0.7.71"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

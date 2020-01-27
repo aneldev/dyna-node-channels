@@ -3287,10 +3287,10 @@ dyna-node-fs@^1.0.2:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.68:
-  version "0.7.68"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.68.tgz#a14aebfecb20622ca88ca983b727cef622a318e5"
-  integrity sha512-3BwCffNGxDWkJnShk3ZVKoErMyt3RZsq/F/c3f2HHoBDHVrM3tFHHMVy6uqimqfAhHdOv+2oq9r3BeHDik+xew==
+dyna-node@^0.7.71:
+  version "0.7.71"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.71.tgz#ff2ed23a69c929c3f4f3c368615e5974fcb71fab"
+  integrity sha512-3UFQ7+jDAgrgH8FF0C6Q1bjiYlBhad/ntA5Va7pjSTmA3jB6GBz2KeXN5ZO8h6uPvm1qjJ47mvzDifiBmVGoMA==
   dependencies:
     dyna-crypt "^1.1.1"
     dyna-disk-memory "^4.0.3"
@@ -3320,9 +3320,9 @@ dyna-queue-handler@^6.0.6:
     dyna-job-queue "^5.1.1"
 
 dyna-retry@^2.0.3:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/dyna-retry/-/dyna-retry-2.0.4.tgz#d30c34d2c5edf274745e49ec311e85c661b9d475"
-  integrity sha512-Bcvn6oMIOKIwod7l54sUnCjF6Yd3limkHzr+cziyJlC6LWqDbL4Jksywr4EPiq79PqFudZBQZjbb5hG1KwiSIA==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/dyna-retry/-/dyna-retry-2.1.1.tgz#740b9dfcadc7e036ff6e59e63e1348f596b18d51"
+  integrity sha512-GspyGNP+WN5sTSutzWFGJDoWij46WlUOwzx3Pk2m0iWvU0MH7uO/LGjZkf+H/4+EXnCNv+sPNntZD7sII2OISA==
   dependencies:
     dyna-loops "^1.4.3"
 
@@ -6472,12 +6472,24 @@ mime-db@1.42.0, "mime-db@>= 1.40.0 < 2", mime-db@^1.28.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.42.0.tgz#3e252907b4c7adb906597b4b65636272cf9e7bac"
   integrity sha512-UbfJCR4UAVRNgMpfImz05smAXK7+c+ZntjaA26ANtkXLlOe947Aag5zdIcKQULAiF9Cq4WxBi9jUs5zkA84bYQ==
 
-mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.19, mime-types@~2.1.24:
+mime-db@1.43.0:
+  version "1.43.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.43.0.tgz#0a12e0502650e473d735535050e7c8f4eb4fae58"
+  integrity sha512-+5dsGEEovYbT8UY9yD7eE4XTc4UwJ1jBYlgaQQF38ENsKR3wj/8q8RFZrF9WIZpB2V1ArTVFUva8sAul1NzRzQ==
+
+mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.19:
   version "2.1.25"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.25.tgz#39772d46621f93e2a80a856c53b86a62156a6437"
   integrity sha512-5KhStqB5xpTAeGqKBAMgwaYMnQik7teQN4IAzC7npDv6kzeU6prfkR67bc87J1kWMPGkoaZSq1npmexMgkmEVg==
   dependencies:
     mime-db "1.42.0"
+
+mime-types@~2.1.24:
+  version "2.1.26"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.26.tgz#9c921fc09b7e149a65dfdc0da4d20997200b0a06"
+  integrity sha512-01paPWYgLrkqAyrlDorC1uDwl2p3qZT7yl806vW7DvDoxwXi46jsjFbg+WdwotBIk6/MbEhO/dh5aZ5sNj/dWQ==
+  dependencies:
+    mime-db "1.43.0"
 
 mime@1.6.0:
   version "1.6.0"
