@@ -50,7 +50,7 @@ export const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {
   channel: string;
   accessToken: string;
-  respond?: boolean;       // default: false, Respond with the luck of the requers, commands ok/error will be responded
+  respond?: boolean;       // default: false, Respond with the luck of the request, commands ok/error will be responded
 }
 
 export interface ICOMMAND_Post_data {
@@ -270,12 +270,13 @@ export class DynaNodeChannelsService {
     } = message;
     const testMode = !!headers.testMode;
 
-    if (!this.receivers[channel]) return; // exit, nobody is registerd so far
+    if (!this.receivers[channel]) return; // exit, nobody is registered so far
 
     this.receivers[channel].concat().forEach(receiver => {
       this.service.send({
         headers: {
           ...headers,
+          action: 'COMMAND_Post',
           dynaNodeChannelSender: sender,
           dynaNodeAckTimeout: testMode
             ? 500

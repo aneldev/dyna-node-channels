@@ -248,10 +248,10 @@ var DynaNodeChannelsService = /** @class */ (function () {
         var sender = message.from, channel = message.args.channel, _a = message.data, _b = _a.headers, headers = _b === void 0 ? {} : _b, args = _a.args, command = _a.command, data = _a.data, binaryData = message.binaryData;
         var testMode = !!headers.testMode;
         if (!this.receivers[channel])
-            return; // exit, nobody is registerd so far
+            return; // exit, nobody is registered so far
         this.receivers[channel].concat().forEach(function (receiver) {
             _this.service.send({
-                headers: __assign(__assign({}, headers), { dynaNodeChannelSender: sender, dynaNodeAckTimeout: testMode
+                headers: __assign(__assign({}, headers), { action: 'COMMAND_Post', dynaNodeChannelSender: sender, dynaNodeAckTimeout: testMode
                         ? 500
                         : 10000 }),
                 command: command,
