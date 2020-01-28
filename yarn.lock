@@ -3287,10 +3287,10 @@ dyna-node-fs@^1.0.2:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.71:
-  version "0.7.71"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.71.tgz#ff2ed23a69c929c3f4f3c368615e5974fcb71fab"
-  integrity sha512-3UFQ7+jDAgrgH8FF0C6Q1bjiYlBhad/ntA5Va7pjSTmA3jB6GBz2KeXN5ZO8h6uPvm1qjJ47mvzDifiBmVGoMA==
+dyna-node@^0.7.73:
+  version "0.7.73"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.73.tgz#8db8cf2707caf55aa63cd5be78bfdb2f8ad98266"
+  integrity sha512-F1utY2kM31U2Ppu9Ug5nUvr3Xc/xlaQTReTw3M1GLJCM/QZvG3mszqn/Q30mckQCBsZOzTdKSPML2utetMV3/g==
   dependencies:
     dyna-crypt "^1.1.1"
     dyna-disk-memory "^4.0.3"
@@ -3299,7 +3299,7 @@ dyna-node@^0.7.71:
     dyna-loops "^1.7.2"
     dyna-object-assign "^1.0.4"
     dyna-queue-handler "^6.0.6"
-    dyna-retry "^2.0.3"
+    dyna-retry "^2.1.0"
     dyna-timeout "^1.0.22"
     engine.io "^3.2.0"
     engine.io-client "^3.2.1"
@@ -3319,10 +3319,10 @@ dyna-queue-handler@^6.0.6:
     dyna-interfaces "^4.0.6"
     dyna-job-queue "^5.1.1"
 
-dyna-retry@^2.0.3:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/dyna-retry/-/dyna-retry-2.1.1.tgz#740b9dfcadc7e036ff6e59e63e1348f596b18d51"
-  integrity sha512-GspyGNP+WN5sTSutzWFGJDoWij46WlUOwzx3Pk2m0iWvU0MH7uO/LGjZkf+H/4+EXnCNv+sPNntZD7sII2OISA==
+dyna-retry@^2.1.0:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/dyna-retry/-/dyna-retry-2.1.3.tgz#c2e848c9f47c94c0fdcd8ecc60cda4d5d3696ef0"
+  integrity sha512-77WO9dxdQ2CSl15M8cZB86H2rKyubxAXVRKum6BL3fZ+yMedo0+TA3hhU0spH6VypsT7qmrc169+NyUHQZFacg==
   dependencies:
     dyna-loops "^1.4.3"
 
