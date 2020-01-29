@@ -272,7 +272,7 @@ export class DynaNodeChannelsService {
 
     if (!this.receivers[channel]) return; // exit, nobody is registered so far
 
-    this.receivers[channel].concat().forEach(receiver => {
+    this.receivers[channel].forEach(receiver => {
       this.service.send({
         headers: {
           ...headers,

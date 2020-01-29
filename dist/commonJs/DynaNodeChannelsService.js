@@ -249,7 +249,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
         var testMode = !!headers.testMode;
         if (!this.receivers[channel])
             return; // exit, nobody is registered so far
-        this.receivers[channel].concat().forEach(function (receiver) {
+        this.receivers[channel].forEach(function (receiver) {
             _this.service.send({
                 headers: __assign(__assign({}, headers), { action: 'COMMAND_Post', dynaNodeChannelSender: sender, dynaNodeAckTimeout: testMode
                         ? 500
