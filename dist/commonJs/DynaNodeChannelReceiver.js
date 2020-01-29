@@ -43,7 +43,7 @@ var DynaNodeChannelReceiver = /** @class */ (function () {
     function DynaNodeChannelReceiver(config) {
         this.config = config;
         this.client = new node_1.DynaNodeClient({
-            prefixAddress: "channelReceiver[" + config.channel + "]",
+            prefixAddress: (config.prefixAddress && config.prefixAddress + '--' || '') + "channelReceiver[" + config.channel + "]",
             onMessage: config.onMessage,
         });
     }

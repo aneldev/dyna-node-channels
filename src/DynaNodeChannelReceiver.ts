@@ -11,10 +11,11 @@ import {
 import {validateChannelName} from "./validateChannelName";
 
 export interface IDynaNodeChannelReceiverConfig {
-  dynaNodeChannelServiceAddress: string;
-  channel: string;
-  accessToken: string;
-  onMessage: (message: DynaNodeMessage) => void;
+  dynaNodeChannelServiceAddress: string;          // The address of the Channels service
+  prefixAddress?: string;                         // Prefix the sender address of the broadcaster
+  channel: string;                                // The channel to listen
+  accessToken: string;                            // Access token to get registered to this channel as receiver
+  onMessage: (message: DynaNodeMessage) => void;  // Callback for any message posted on this channel
 }
 
 export class DynaNodeChannelReceiver {
@@ -22,7 +23,7 @@ export class DynaNodeChannelReceiver {
 
   constructor(private readonly config: IDynaNodeChannelReceiverConfig) {
     this.client = new DynaNodeClient({
-      prefixAddress: `channelReceiver[${config.channel}]`,
+      prefixAddress: `${config.prefixAddress && config.prefixAddress + '--' || ''}channelReceiver[${config.channel}]`,
       onMessage: config.onMessage,
     });
   }

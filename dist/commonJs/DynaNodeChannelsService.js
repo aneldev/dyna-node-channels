@@ -68,9 +68,9 @@ var DynaNodeChannelsService = /** @class */ (function () {
             onServiceRegistrationFail: this.config.onServiceRegistrationFail,
             onMessageQueueError: this.config.onMessageQueueError,
             publicCommands: [
-                exports.COMMAND_Post,
                 exports.COMMAND_RegisterReceiver,
                 exports.COMMAND_UnregisterReceiver,
+                exports.COMMAND_Post,
             ],
             onCommand: (_a = {},
                 _a[exports.COMMAND_RegisterReceiver] = {
@@ -100,7 +100,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                                 command: 'error',
                                                 data: {
                                                     code: 1912172010,
-                                                    message: 'Internal error onChannelRegister'
+                                                    message: 'Internal error: there was an exception in onChannelRegister'
                                                 },
                                             }).catch(function () { return undefined; });
                                             next();
@@ -151,7 +151,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                                 command: 'error',
                                                 data: {
                                                     code: 1912172011,
-                                                    message: 'Internal error onChannelUnregister'
+                                                    message: 'Internal error: there was an exception in onChannelUnregister'
                                                 },
                                             }).catch(function () { return undefined; });
                                             next();
@@ -203,7 +203,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                                     command: 'error',
                                                     data: {
                                                         code: 1912172011,
-                                                        message: 'Internal error onChannelPost'
+                                                        message: 'Internal error: there was an exception in onChannelPost'
                                                     },
                                                 }).catch(function () { return undefined; });
                                             next();
@@ -263,11 +263,12 @@ var DynaNodeChannelsService = /** @class */ (function () {
                 .catch(function (error) {
                 if (error.code === 133.144) {
                     // Remove the listener, it doesn't exist anymore
-                    console.debug('removing listener', receiver.receiverAddress);
                     _this.receivers[channel] =
                         _this.receivers[channel]
                             .filter(function (scanReceiver) { return scanReceiver.receiverAddress !== receiver.receiverAddress; });
+                    return;
                 }
+                console.warn("DynanodeChannelsService: Cannot post message to " + receiver.receiverAddress, error);
             });
         });
     };

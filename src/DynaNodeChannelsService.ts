@@ -8,7 +8,7 @@ import { IError } from "dyna-interfaces";
 export interface IDynaNodeChannelsServiceConfig {
   parallelRequests?: number;                                // default: 5
 
-  serviceRegistration?: {                                   // required to have public name (connaction id), otherwise it will have the guid connection id
+  serviceRegistration?: {                                   // Serrvice registration. Required to have public name (connaction id), otherwise it will have the guid connection id
     serverDynaNodeAddress: string;
     serviceConnectionId: string;
     encryptionKey: string;
@@ -16,14 +16,14 @@ export interface IDynaNodeChannelsServiceConfig {
     requestExpirationInMinutes?: number;                    // default: 0.5 min
   };
 
-  disk: {                                                   // physical or virtual disk access
+  disk: {                                                   // Physical or virtual disk access for buffering
     set: (key: string, data: any) => Promise<void>;
     get: (key: string) => Promise<any>;
     del: (key: string) => Promise<void>;
     delAll: () => Promise<void>;
   };
 
-  onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;
+  onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;    // Validate the incoming registration
   onChannelUnregister: (channel: string, accessToken: string) => Promise<boolean>;
   onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;
 
@@ -94,9 +94,9 @@ export class DynaNodeChannelsService {
       onMessageQueueError: this.config.onMessageQueueError,
 
       publicCommands: [
-        COMMAND_Post,
         COMMAND_RegisterReceiver,
         COMMAND_UnregisterReceiver,
+        COMMAND_Post,
       ],
 
       onCommand: {
@@ -125,7 +125,7 @@ export class DynaNodeChannelsService {
                 command: 'error',
                 data: {
                   code: 1912172010,
-                  message: 'Internal error onChannelRegister'
+                  message: 'Internal error: there was an exception in onChannelRegister'
                 } as IError,
               }).catch(() => undefined);
               next();
@@ -171,7 +171,7 @@ export class DynaNodeChannelsService {
                 command: 'error',
                 data: {
                   code: 1912172011,
-                  message: 'Internal error onChannelUnregister'
+                  message: 'Internal error: there was an exception in onChannelUnregister'
                 } as IError,
               }).catch(() => undefined);
               next();
@@ -217,7 +217,7 @@ export class DynaNodeChannelsService {
                 command: 'error',
                 data: {
                   code: 1912172011,
-                  message: 'Internal error onChannelPost'
+                  message: 'Internal error: there was an exception in onChannelPost'
                 } as IError,
               }).catch(() => undefined);
               next();
@@ -291,11 +291,12 @@ export class DynaNodeChannelsService {
         .catch((error: IError) => {
           if (error.code === 133.144) {
             // Remove the listener, it doesn't exist anymore
-            console.debug('removing listener', receiver.receiverAddress);
             this.receivers[channel] =
               this.receivers[channel]
                 .filter(scanReceiver => scanReceiver.receiverAddress !== receiver.receiverAddress);
+            return;
           }
+          console.warn(`DynanodeChannelsService: Cannot post message to ${receiver.receiverAddress}`, error);
         });
     });
   }

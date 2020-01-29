@@ -10,9 +10,10 @@ import {
 import {validateChannelName} from "./validateChannelName";
 
 export interface IDynaNodeChannelBroadcasterConfig {
-  dynaNodeChannelServiceAddress: string;
-  channel: string;
-  accessToken: string;
+  dynaNodeChannelServiceAddress: string;  // The address of the Channels service
+  prefixAddress?: string;                 // Prefix the sender address of the broadcaster
+  channel: string;                        // The channel to broadcast
+  accessToken: string;                    // Token for the registration to this channel to broadcast
 }
 
 export class DynaNodeChannelBroadcaster {
@@ -20,7 +21,7 @@ export class DynaNodeChannelBroadcaster {
 
   constructor(private readonly config: IDynaNodeChannelBroadcasterConfig) {
     this.client = new DynaNodeClient({
-      prefixAddress: `channelBroadcaster[${config.channel}]`,
+      prefixAddress: `${config.prefixAddress && config.prefixAddress + '--' || ''}channelBroadcaster[${config.channel}]`,
       onMessage: message => console.warn('DynaNodeChannelBroadcaster, 202001201930, received an unexpected message that probably is an error', message),
     });
   }
