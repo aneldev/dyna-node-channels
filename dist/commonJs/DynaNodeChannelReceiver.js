@@ -87,7 +87,6 @@ var DynaNodeChannelReceiver = /** @class */ (function () {
                             command: DynaNodeChannelsService_1.COMMAND_UnregisterReceiver,
                             args: {
                                 channel: this.config.channel,
-                                accessToken: this.config.accessToken,
                             },
                         })];
                     case 1:

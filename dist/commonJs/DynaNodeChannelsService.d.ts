@@ -28,7 +28,6 @@ export interface ICOMMAND_RegisterReceiver_args {
 export declare const COMMAND_UnregisterReceiver = "COMMAND_UnregisterReceiver";
 export interface ICOMMAND_UnregisterReceiver_args {
     channel: string;
-    accessToken: string;
 }
 export declare const COMMAND_Post = "COMMAND_Post";
 export interface ICOMMAND_Post_args {

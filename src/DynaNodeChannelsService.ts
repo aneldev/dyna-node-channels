@@ -23,12 +23,11 @@ export interface IDynaNodeChannelsServiceConfig {
     delAll: () => Promise<void>;
   };
 
-  onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;    // Validate the incoming registration
-  onChannelUnregister: (channel: string, accessToken: string) => Promise<boolean>;
-  onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;
+  onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;    // Validate broadcaster/receiver registration for this channel
+  onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;        // Validate broadcaster's post for this channel
 
-  onServiceRegistrationFail: (error: IError) => void;                 // this is where the server doesn't allow the registration of this service or any other network error
-  onMessageQueueError: (error: IError) => void;                       // if this happen is a hardware disk error!
+  onServiceRegistrationFail: (error: IError) => void;                 // This is where the server doesn't allow the registration of this service or any other network error
+  onMessageQueueError: (error: IError) => void;                       // If this happen is a hardware disk error!
 }
 
 export const COMMAND_RegisterReceiver = "COMMAND_RegisterReceiver";
@@ -42,7 +41,6 @@ export const COMMAND_UnregisterReceiver = "COMMAND_UnregisterReceiver";
 
 export interface ICOMMAND_UnregisterReceiver_args {
   channel: string;
-  accessToken: string;
 }
 
 export const COMMAND_Post = "COMMAND_Post";
@@ -83,7 +81,6 @@ export class DynaNodeChannelsService {
     const {
       onChannelPost,
       onChannelRegister,
-      onChannelUnregister,
     } = this.config;
 
     this.service = new DynaNodeService({
@@ -153,41 +150,14 @@ export class DynaNodeChannelsService {
               from: receiverAddress,
               args: {
                 channel,
-                accessToken,
               }
             } = message;
 
-            let valid = false;
-            let error_: any;
-
-            try {
-              valid = await onChannelUnregister(channel, accessToken);
-            } catch (e) {
-              error_ = e;
-            }
-
-            if (error_) {
-              reply({
-                command: 'error',
-                data: {
-                  code: 1912172011,
-                  message: 'Internal error: there was an exception in onChannelUnregister'
-                } as IError,
-              }).catch(() => undefined);
-              next();
-              return;
-            }
-
-            if (valid) {
-              if (!this.receivers[channel]) this.receivers[channel] = [];
-              this.receivers[channel] =
-                this.receivers[channel]
-                  .filter(receiver => receiver.receiverAddress !== receiverAddress);
-              reply({command: 'ok'}).catch(() => undefined);
-            }
-            else {
-              reply({command: 'error/403'}).catch(() => undefined);
-            }
+            if (!this.receivers[channel]) this.receivers[channel] = [];
+            this.receivers[channel] =
+              this.receivers[channel]
+                .filter(receiver => receiver.receiverAddress !== receiverAddress);
+            reply({command: 'ok'}).catch(() => undefined);
 
             next();
           },

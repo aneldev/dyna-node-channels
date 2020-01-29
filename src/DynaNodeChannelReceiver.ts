@@ -6,7 +6,7 @@ import {
 import {
   COMMAND_RegisterReceiver,
   ICOMMAND_RegisterReceiver_args,
-  COMMAND_UnregisterReceiver,
+  COMMAND_UnregisterReceiver, ICOMMAND_UnregisterReceiver_args,
 } from "./DynaNodeChannelsService";
 import {validateChannelName} from "./validateChannelName";
 
@@ -51,12 +51,11 @@ export class DynaNodeChannelReceiver {
   }
 
   public async stop(): Promise<void> {
-    await this.client.sendReceive<ICOMMAND_RegisterReceiver_args>({
+    await this.client.sendReceive<ICOMMAND_UnregisterReceiver_args>({
       to: this.config.dynaNodeChannelServiceAddress,
       command: COMMAND_UnregisterReceiver,
       args: {
         channel: this.config.channel,
-        accessToken: this.config.accessToken,
       },
     });
     await this.client.stopConnections();

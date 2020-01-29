@@ -1,6 +1,7 @@
 /// <reference types="node" />
 export interface IDynaNodeChannelBroadcasterConfig {
     dynaNodeChannelServiceAddress: string;
+    prefixAddress?: string;
     channel: string;
     accessToken: string;
 }
