@@ -12,3 +12,7 @@ export {
   DynaNodeChannelReceiver,
   IDynaNodeChannelReceiverConfig,
 } from "./DynaNodeChannelReceiver";
+
+export {
+  validateChannelName,
+} from "./validateChannelName";

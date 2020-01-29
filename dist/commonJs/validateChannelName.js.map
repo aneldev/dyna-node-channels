@@ -1,0 +1,1 @@
+{"version":3,"file":"validateChannelName.js","sourceRoot":"","sources":["../../src/validateChannelName.ts"],"names":[],"mappings":";;AAAa,QAAA,mBAAmB,GAAG,UAAC,OAAe;IACjD,IAAI,OAAO,CAAC,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;QAAE,OAAO,4CAA4C,CAAC;IACnF,IAAI,OAAO,CAAC,OAAO,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC;QAAE,OAAO,iCAAiC,CAAC;IACxE,OAAO,EAAE,CAAC;AACZ,CAAC,CAAC"}

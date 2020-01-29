@@ -8,6 +8,7 @@ import {
   ICOMMAND_RegisterReceiver_args,
   COMMAND_UnregisterReceiver,
 } from "./DynaNodeChannelsService";
+import {validateChannelName} from "./validateChannelName";
 
 export interface IDynaNodeChannelReceiverConfig {
   dynaNodeChannelServiceAddress: string;
@@ -21,11 +22,20 @@ export class DynaNodeChannelReceiver {
 
   constructor(private readonly config: IDynaNodeChannelReceiverConfig) {
     this.client = new DynaNodeClient({
+      prefixAddress: `channelReceiver[${config.channel}]`,
       onMessage: config.onMessage,
     });
   }
 
   public async start(): Promise<void> {
+    const validationError = validateChannelName(this.config.channel);
+    if (validationError) {
+      throw {
+        code: 202001280911,
+        message: `DynaNodeChannelReceiver: Invalid channel name [${this.config.channel}]: ${validationError}`,
+      };
+    }
+
     const response = await this.client.sendReceive<ICOMMAND_RegisterReceiver_args>({
       to: this.config.dynaNodeChannelServiceAddress,
       command: COMMAND_RegisterReceiver,

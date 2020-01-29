@@ -7,6 +7,7 @@ import {
   ICOMMAND_Post_args,
   ICOMMAND_Post_data,
 } from "./DynaNodeChannelsService";
+import {validateChannelName} from "./validateChannelName";
 
 export interface IDynaNodeChannelBroadcasterConfig {
   dynaNodeChannelServiceAddress: string;
@@ -15,11 +16,13 @@ export interface IDynaNodeChannelBroadcasterConfig {
 }
 
 export class DynaNodeChannelBroadcaster {
-  private client = new DynaNodeClient({
-    onMessage: message => console.warn('DynaNodeChannelBroadcaster, 202001201930, received an unexpected message that probably is an error', message),
-  });
+  private client: DynaNodeClient;
 
   constructor(private readonly config: IDynaNodeChannelBroadcasterConfig) {
+    this.client = new DynaNodeClient({
+      prefixAddress: `channelBroadcaster[${config.channel}]`,
+      onMessage: message => console.warn('DynaNodeChannelBroadcaster, 202001201930, received an unexpected message that probably is an error', message),
+    });
   }
 
   public stop(): Promise<void> {
@@ -41,6 +44,14 @@ export class DynaNodeChannelBroadcaster {
       binaryData?: Buffer,
     }
   ): Promise<void> {
+    const validationError = validateChannelName(this.config.channel);
+    if (validationError) {
+      throw {
+        code: 202001280912,
+        message: `DynaNodeChannelBroadcaster: Invalid channel name [${this.config.channel}]: ${validationError}`,
+      };
+    }
+
     const responseMessage = await this.client.sendReceive<ICOMMAND_Post_args, ICOMMAND_Post_data>({
       to: this.config.dynaNodeChannelServiceAddress,
       command: COMMAND_Post,
