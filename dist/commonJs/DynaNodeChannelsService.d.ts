@@ -15,7 +15,6 @@ export interface IDynaNodeChannelsServiceConfig {
         delAll: () => Promise<void>;
     };
     onChannelRegister: (channel: string, accessToken: string) => Promise<boolean>;
-    onChannelUnregister: (channel: string, accessToken: string) => Promise<boolean>;
     onChannelPost: (channel: string, accessToken: string) => Promise<boolean>;
     onServiceRegistrationFail: (error: IError) => void;
     onMessageQueueError: (error: IError) => void;

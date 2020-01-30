@@ -16,7 +16,6 @@ The channels service
         serviceConnectionId: 'feeder-service',
       },
       onChannelRegister: async (channel, accessToken) => accessToken === '####at-registration',
-      onChannelUnregister: async (channel, accessToken) => accessToken === '####at-registration',
       onChannelPost: async (channel, accessToken) => accessToken === '####at-post',
       onMessageQueueError: e => console.error(e),
       onServiceRegistrationFail: e => console.error(e),
@@ -60,6 +59,6 @@ And this is the receiver that will receive the messages
         } = message;
       }
     });
-
+    receiver.start();
 ```
 

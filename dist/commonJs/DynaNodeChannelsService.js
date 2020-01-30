@@ -60,7 +60,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
     DynaNodeChannelsService.prototype.init = function () {
         var _a;
         var _this = this;
-        var _b = this.config, onChannelPost = _b.onChannelPost, onChannelRegister = _b.onChannelRegister, onChannelUnregister = _b.onChannelUnregister;
+        var _b = this.config, onChannelPost = _b.onChannelPost, onChannelRegister = _b.onChannelRegister;
         this.service = new node_1.DynaNodeService({
             parallelRequests: this.config.parallelRequests,
             serviceRegistration: this.config.serviceRegistration,

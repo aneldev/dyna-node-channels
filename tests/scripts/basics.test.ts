@@ -42,7 +42,6 @@ describe('DynaNodeFeederService', () => {
         serviceConnectionId: 'feeder-service',
       },
       onChannelRegister: async (channel, accessToken) => accessToken === '####at-registration',
-      onChannelUnregister: async (channel, accessToken) => accessToken === '####at-registration',
       onChannelPost: async (channel, accessToken) => accessToken === '####at-post',
       onMessageQueueError: e => console.error(e),
       onServiceRegistrationFail: e => console.error(e),
