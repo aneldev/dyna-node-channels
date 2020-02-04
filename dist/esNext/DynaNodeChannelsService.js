@@ -58,7 +58,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
     DynaNodeChannelsService.prototype.init = function () {
         var _a;
         var _this = this;
-        var _b = this.config, onChannelPost = _b.onChannelPost, onChannelRegister = _b.onChannelRegister, onChannelUnregister = _b.onChannelUnregister;
+        var _b = this.config, onChannelPost = _b.onChannelPost, onChannelRegister = _b.onChannelRegister;
         this.service = new DynaNodeService({
             parallelRequests: this.config.parallelRequests,
             serviceRegistration: this.config.serviceRegistration,
@@ -66,9 +66,9 @@ var DynaNodeChannelsService = /** @class */ (function () {
             onServiceRegistrationFail: this.config.onServiceRegistrationFail,
             onMessageQueueError: this.config.onMessageQueueError,
             publicCommands: [
-                COMMAND_Post,
                 COMMAND_RegisterReceiver,
                 COMMAND_UnregisterReceiver,
+                COMMAND_Post,
             ],
             onCommand: (_a = {},
                 _a[COMMAND_RegisterReceiver] = {
@@ -98,7 +98,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                                 command: 'error',
                                                 data: {
                                                     code: 1912172010,
-                                                    message: 'Internal error onChannelRegister'
+                                                    message: 'Internal error: there was an exception in onChannelRegister'
                                                 },
                                             }).catch(function () { return undefined; });
                                             next();
@@ -126,49 +126,17 @@ var DynaNodeChannelsService = /** @class */ (function () {
                     execute: function (_a) {
                         var message = _a.message, reply = _a.reply, next = _a.next;
                         return __awaiter(_this, void 0, void 0, function () {
-                            var receiverAddress, _b, channel, accessToken, valid, error_, e_2;
-                            return __generator(this, function (_c) {
-                                switch (_c.label) {
-                                    case 0:
-                                        receiverAddress = message.from, _b = message.args, channel = _b.channel, accessToken = _b.accessToken;
-                                        valid = false;
-                                        _c.label = 1;
-                                    case 1:
-                                        _c.trys.push([1, 3, , 4]);
-                                        return [4 /*yield*/, onChannelUnregister(channel, accessToken)];
-                                    case 2:
-                                        valid = _c.sent();
-                                        return [3 /*break*/, 4];
-                                    case 3:
-                                        e_2 = _c.sent();
-                                        error_ = e_2;
-                                        return [3 /*break*/, 4];
-                                    case 4:
-                                        if (error_) {
-                                            reply({
-                                                command: 'error',
-                                                data: {
-                                                    code: 1912172011,
-                                                    message: 'Internal error onChannelUnregister'
-                                                },
-                                            }).catch(function () { return undefined; });
-                                            next();
-                                            return [2 /*return*/];
-                                        }
-                                        if (valid) {
-                                            if (!this.receivers[channel])
-                                                this.receivers[channel] = [];
-                                            this.receivers[channel] =
-                                                this.receivers[channel]
-                                                    .filter(function (receiver) { return receiver.receiverAddress !== receiverAddress; });
-                                            reply({ command: 'ok' }).catch(function () { return undefined; });
-                                        }
-                                        else {
-                                            reply({ command: 'error/403' }).catch(function () { return undefined; });
-                                        }
-                                        next();
-                                        return [2 /*return*/];
-                                }
+                            var receiverAddress, channel;
+                            return __generator(this, function (_b) {
+                                receiverAddress = message.from, channel = message.args.channel;
+                                if (!this.receivers[channel])
+                                    this.receivers[channel] = [];
+                                this.receivers[channel] =
+                                    this.receivers[channel]
+                                        .filter(function (receiver) { return receiver.receiverAddress !== receiverAddress; });
+                                reply({ command: 'ok' }).catch(function () { return undefined; });
+                                next();
+                                return [2 /*return*/];
                             });
                         });
                     },
@@ -177,7 +145,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                     execute: function (_a) {
                         var message = _a.message, reply = _a.reply, next = _a.next;
                         return __awaiter(_this, void 0, void 0, function () {
-                            var _b, channel, accessToken, _c, respond, valid, error_, e_3;
+                            var _b, channel, accessToken, _c, respond, valid, error_, e_2;
                             return __generator(this, function (_d) {
                                 switch (_d.label) {
                                     case 0:
@@ -191,8 +159,8 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                         valid = _d.sent();
                                         return [3 /*break*/, 4];
                                     case 3:
-                                        e_3 = _d.sent();
-                                        error_ = e_3;
+                                        e_2 = _d.sent();
+                                        error_ = e_2;
                                         return [3 /*break*/, 4];
                                     case 4:
                                         if (error_) {
@@ -201,7 +169,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                                     command: 'error',
                                                     data: {
                                                         code: 1912172011,
-                                                        message: 'Internal error onChannelPost'
+                                                        message: 'Internal error: there was an exception in onChannelPost'
                                                     },
                                                 }).catch(function () { return undefined; });
                                             next();
@@ -246,10 +214,10 @@ var DynaNodeChannelsService = /** @class */ (function () {
         var sender = message.from, channel = message.args.channel, _a = message.data, _b = _a.headers, headers = _b === void 0 ? {} : _b, args = _a.args, command = _a.command, data = _a.data, binaryData = message.binaryData;
         var testMode = !!headers.testMode;
         if (!this.receivers[channel])
-            return; // exit, nobody is registerd so far
-        this.receivers[channel].concat().forEach(function (receiver) {
+            return; // exit, nobody is registered so far
+        this.receivers[channel].forEach(function (receiver) {
             _this.service.send({
-                headers: __assign(__assign({}, headers), { dynaNodeChannelSender: sender, dynaNodeAckTimeout: testMode
+                headers: __assign(__assign({}, headers), { action: 'COMMAND_Post', dynaNodeChannelSender: sender, dynaNodeAckTimeout: testMode
                         ? 500
                         : 10000 }),
                 command: command,
@@ -261,11 +229,12 @@ var DynaNodeChannelsService = /** @class */ (function () {
                 .catch(function (error) {
                 if (error.code === 133.144) {
                     // Remove the listener, it doesn't exist anymore
-                    console.debug('removing listener', receiver.receiverAddress);
                     _this.receivers[channel] =
                         _this.receivers[channel]
                             .filter(function (scanReceiver) { return scanReceiver.receiverAddress !== receiver.receiverAddress; });
+                    return;
                 }
+                console.warn("DynanodeChannelsService: Cannot post message to " + receiver.receiverAddress, error);
             });
         });
     };

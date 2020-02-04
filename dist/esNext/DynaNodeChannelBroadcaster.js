@@ -36,10 +36,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { DynaNodeClient, } from "dyna-node/dist/commonJs/node";
 import { COMMAND_Post, } from "./DynaNodeChannelsService";
+import { validateChannelName } from "./validateChannelName";
 var DynaNodeChannelBroadcaster = /** @class */ (function () {
     function DynaNodeChannelBroadcaster(config) {
         this.config = config;
         this.client = new DynaNodeClient({
+            prefixAddress: (config.prefixAddress && config.prefixAddress + '--' || '') + "channelBroadcaster[" + config.channel + "]",
             onMessage: function (message) { return console.warn('DynaNodeChannelBroadcaster, 202001201930, received an unexpected message that probably is an error', message); },
         });
     }
@@ -49,25 +51,33 @@ var DynaNodeChannelBroadcaster = /** @class */ (function () {
     DynaNodeChannelBroadcaster.prototype.send = function (_a) {
         var headers = _a.headers, args = _a.args, command = _a.command, data = _a.data, binaryData = _a.binaryData;
         return __awaiter(this, void 0, void 0, function () {
-            var responseMessage;
+            var validationError, responseMessage;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.client.sendReceive({
-                            to: this.config.dynaNodeChannelServiceAddress,
-                            command: COMMAND_Post,
-                            args: {
-                                channel: this.config.channel,
-                                accessToken: this.config.accessToken,
-                                respond: true,
-                            },
-                            binaryData: binaryData,
-                            data: {
-                                command: command,
-                                headers: headers,
-                                args: args,
-                                data: data,
-                            },
-                        })];
+                    case 0:
+                        validationError = validateChannelName(this.config.channel);
+                        if (validationError) {
+                            throw {
+                                code: 202001280912,
+                                message: "DynaNodeChannelBroadcaster: Invalid channel name [" + this.config.channel + "]: " + validationError,
+                            };
+                        }
+                        return [4 /*yield*/, this.client.sendReceive({
+                                to: this.config.dynaNodeChannelServiceAddress,
+                                command: COMMAND_Post,
+                                args: {
+                                    channel: this.config.channel,
+                                    accessToken: this.config.accessToken,
+                                    respond: true,
+                                },
+                                binaryData: binaryData,
+                                data: {
+                                    command: command,
+                                    headers: headers,
+                                    args: args,
+                                    data: data,
+                                },
+                            })];
                     case 1:
                         responseMessage = _b.sent();
                         if (responseMessage.command !== 'ok') {

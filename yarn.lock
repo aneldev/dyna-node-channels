@@ -3287,10 +3287,10 @@ dyna-node-fs@^1.0.2:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.73:
-  version "0.7.73"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.73.tgz#8db8cf2707caf55aa63cd5be78bfdb2f8ad98266"
-  integrity sha512-F1utY2kM31U2Ppu9Ug5nUvr3Xc/xlaQTReTw3M1GLJCM/QZvG3mszqn/Q30mckQCBsZOzTdKSPML2utetMV3/g==
+dyna-node@^0.7.74:
+  version "0.7.74"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.74.tgz#c7e57e6d0c4ce41af3ed5fff16811b016579f45c"
+  integrity sha512-irW1voeeGuWEFKe7guowMdHJxSljFYMbUCPtxrceoBeC5zxtktFsmnV4jdB5YtgX73r5Bq1aHtkW3rW7hR531g==
   dependencies:
     dyna-crypt "^1.1.1"
     dyna-disk-memory "^4.0.3"

@@ -1,6 +1,7 @@
 import { DynaNodeMessage } from "dyna-node/dist/commonJs/node";
 export interface IDynaNodeChannelReceiverConfig {
     dynaNodeChannelServiceAddress: string;
+    prefixAddress?: string;
     channel: string;
     accessToken: string;
     onMessage: (message: DynaNodeMessage) => void;

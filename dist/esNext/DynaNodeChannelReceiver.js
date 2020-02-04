@@ -36,26 +36,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import { DynaNodeClient, } from "dyna-node/dist/commonJs/node";
 import { COMMAND_RegisterReceiver, COMMAND_UnregisterReceiver, } from "./DynaNodeChannelsService";
+import { validateChannelName } from "./validateChannelName";
 var DynaNodeChannelReceiver = /** @class */ (function () {
     function DynaNodeChannelReceiver(config) {
         this.config = config;
         this.client = new DynaNodeClient({
+            prefixAddress: (config.prefixAddress && config.prefixAddress + '--' || '') + "channelReceiver[" + config.channel + "]",
             onMessage: config.onMessage,
         });
     }
     DynaNodeChannelReceiver.prototype.start = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var response;
+            var validationError, response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.client.sendReceive({
-                            to: this.config.dynaNodeChannelServiceAddress,
-                            command: COMMAND_RegisterReceiver,
-                            args: {
-                                channel: this.config.channel,
-                                accessToken: this.config.accessToken,
-                            },
-                        })];
+                    case 0:
+                        validationError = validateChannelName(this.config.channel);
+                        if (validationError) {
+                            throw {
+                                code: 202001280911,
+                                message: "DynaNodeChannelReceiver: Invalid channel name [" + this.config.channel + "]: " + validationError,
+                            };
+                        }
+                        return [4 /*yield*/, this.client.sendReceive({
+                                to: this.config.dynaNodeChannelServiceAddress,
+                                command: COMMAND_RegisterReceiver,
+                                args: {
+                                    channel: this.config.channel,
+                                    accessToken: this.config.accessToken,
+                                },
+                            })];
                     case 1:
                         response = _a.sent();
                         if (response.command !== 'ok') {
@@ -75,7 +85,6 @@ var DynaNodeChannelReceiver = /** @class */ (function () {
                             command: COMMAND_UnregisterReceiver,
                             args: {
                                 channel: this.config.channel,
-                                accessToken: this.config.accessToken,
                             },
                         })];
                     case 1:
