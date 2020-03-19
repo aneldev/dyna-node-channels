@@ -99,6 +99,38 @@ describe('DynaNodeFeederService', () => {
       .then(() => done());
   });
 
+  it('broadcasts one message with wrong token', async (done) => {
+    const receiver = new DynaNodeChannelReceiver({
+      dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
+      channel: 'systemUpdates',
+      accessToken: '####at-registration',
+      onMessage: message => {
+        fail('Incoming message was unexpected!');
+      },
+    });
+    const myBroadcaster = new DynaNodeChannelBroadcaster({
+      dynaNodeChannelServiceAddress: 'feeder-service@n/localhost/33044',
+      channel: 'systemUpdates',
+      accessToken: '####at-post---WRONG',
+    });
+
+    await receiver.start()
+      .catch(error => fail({message: 'Receiver cannot start', error: error.data.replyMessage}));
+
+    myBroadcaster.send({
+      headers: {test: 0},
+      args: {test: 1},
+      command: 'test',
+      data: {test: 2}
+    })
+      .then(() => fail('It should fail'))
+      .catch(error => {
+        expect(error.data.replyMessage.command).toBe('error/403');
+      })
+      .then(() => receiver.stop())
+      .then(() => done());
+  });
+
   it(`broadcasts one message to 5 receivers`, async (done) => {
     const RECEIVERS_COUNT = 5;
     let receives = 0;

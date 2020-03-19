@@ -137,7 +137,7 @@ export class DynaNodeChannelsService {
               reply({command: 'ok'}).catch(() => undefined);
             }
             else {
-              reply({command: 'error/403'}).catch(() => undefined);
+              reply({command: 'error/403', data: {message: 'Access denied'}}).catch(() => undefined);
             }
 
             next();
@@ -194,12 +194,15 @@ export class DynaNodeChannelsService {
               return;
             }
 
-            if (valid) {
-              if (respond) reply({command: 'ok'}).catch(() => undefined);
-              this.sendFeed(message);
-            }
-            else {
-              if (respond) reply({command: 'error/403'}).catch(() => undefined);
+            if (valid) this.sendFeed(message);
+
+            if (respond) {
+              reply(
+                valid
+                  ? {command: 'ok'}
+                  : {command: 'error/403', data: {message: 'Access denied'}}
+              )
+                .catch(() => undefined);
             }
 
             next();
