@@ -113,7 +113,7 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                             reply({ command: 'ok' }).catch(function () { return undefined; });
                                         }
                                         else {
-                                            reply({ command: 'error/403' }).catch(function () { return undefined; });
+                                            reply({ command: 'error/403', data: { message: 'Access denied' } }).catch(function () { return undefined; });
                                         }
                                         next();
                                         return [2 /*return*/];
@@ -175,14 +175,13 @@ var DynaNodeChannelsService = /** @class */ (function () {
                                             next();
                                             return [2 /*return*/];
                                         }
-                                        if (valid) {
-                                            if (respond)
-                                                reply({ command: 'ok' }).catch(function () { return undefined; });
+                                        if (valid)
                                             this.sendFeed(message);
-                                        }
-                                        else {
-                                            if (respond)
-                                                reply({ command: 'error/403' }).catch(function () { return undefined; });
+                                        if (respond) {
+                                            reply(valid
+                                                ? { command: 'ok' }
+                                                : { command: 'error/403', data: { message: 'Access denied' } })
+                                                .catch(function () { return undefined; });
                                         }
                                         next();
                                         return [2 /*return*/];

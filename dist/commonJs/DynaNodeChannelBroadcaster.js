@@ -72,6 +72,7 @@ var DynaNodeChannelBroadcaster = /** @class */ (function () {
                                     accessToken: this.config.accessToken,
                                     respond: true,
                                 },
+                                replyTimeoutInMs: 10000,
                                 binaryData: binaryData,
                                 data: {
                                     command: command,
