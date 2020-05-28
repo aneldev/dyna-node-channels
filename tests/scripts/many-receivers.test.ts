@@ -1,6 +1,6 @@
 import "jest";
 
-const RECEIVERS_COUNT = 50;
+const RECEIVERS_COUNT = 10;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = RECEIVERS_COUNT * 1000;
 
 import {
@@ -101,5 +101,4 @@ describe('DynaNodeFeederService', () => {
     })
       .catch(error => fail({message: 'Broadcaster cannot send', error: error.data.replyMessage}));
   });
-
 });
