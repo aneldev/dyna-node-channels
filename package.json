@@ -1,6 +1,6 @@
 {
   "name": "dyna-node-channels",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A channels service based on Dyna Node network layer",
   "repository": {
     "type": "git",
