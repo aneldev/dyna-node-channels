@@ -61,6 +61,7 @@ export class DynaNodeChannelBroadcaster {
         accessToken: this.config.accessToken,
         respond: true,
       },
+      replyTimeoutInMs: 10000,
       binaryData,
       data: {
         command,
