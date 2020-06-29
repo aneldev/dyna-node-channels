@@ -3349,10 +3349,10 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
-dyna-count@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/dyna-count/-/dyna-count-1.0.1.tgz#5a79ce7e7afafd476f24ae17e60478e5cf90f636"
-  integrity sha512-CoUPk1inHMY9tLjbDQqU8Ay/yNEDCBP4vWLlOs86DJTwZMythuncE4AW41auImXBGyZnKpFiT7R/B4tys6pnlg==
+dyna-count@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/dyna-count/-/dyna-count-1.1.2.tgz#45a7a01d7f65217f5c1e06fedc8f080111249924"
+  integrity sha512-TW66MrXvEWtZ464usZbQcMXk2vsiAhK6OfTZyUQ5HHzODyqOdXfAy6QsxDAxlgMgS8edoVL6L8fTtJwji/hS6w==
 
 dyna-crypt@^1.1.1:
   version "1.1.1"
@@ -3360,13 +3360,6 @@ dyna-crypt@^1.1.1:
   integrity sha512-AXvJuTjekMP9MXjtTIiJHcTScACZKQzQchjkXYYnDMw/+1xGmLFw/RlT+2RMfKuOyK7SraPHGv2hL3QikWOzhw==
   dependencies:
     crypto-js "^3.1.9-1"
-
-dyna-debounce@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/dyna-debounce/-/dyna-debounce-2.0.2.tgz#e386f808b0b28e0d07b7cc14c8a955e83522fd32"
-  integrity sha512-GmzEwbEJZhCj9m8XoZWOSi4lpyvDGF01VPky55VrWAlSS2RMd9y8hD8XAVXDI68KScYKRmuMZpkmzNV4nfu08A==
-  dependencies:
-    lodash.debounce "^4.0.8"
 
 dyna-disk-memory@^4.0.3:
   version "4.0.3"
@@ -3378,7 +3371,7 @@ dyna-disk-memory@^4.0.3:
     dyna-universal "^1.3.5"
     md5 "^2.2.1"
 
-dyna-guid@^1.0.10, dyna-guid@^1.0.8:
+dyna-guid@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/dyna-guid/-/dyna-guid-1.0.10.tgz#0aab519f22ef399ef43aed44f9bf905d609b4bc8"
   integrity sha512-3dzl1B2+9VUM1zaPXiMaVCSH+oS6JYHp/0iwI25qbj0NpHFHagLgDWkkDGSXTT+vMQFHb8CPIDrDjRMFnFwMuQ==
@@ -3417,20 +3410,20 @@ dyna-node-fs@^1.0.2, dyna-node-fs@^1.0.4:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.98:
-  version "0.7.98"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.98.tgz#0f75d332685184d912ae424ebf459bd0f85cdb45"
-  integrity sha512-zKhqr1ved1Txut/Ody/QILDlkfeYuqbmN2L9h5LH7Xbv3ZcC6B0isQ+xdujETtnj4SsPe7Sg3oZHcgjleD114Q==
+dyna-node@^0.7.99:
+  version "0.7.99"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.99.tgz#5102d3cd2484a651bf624fd177cd4010c0a67b07"
+  integrity sha512-of/S+HZPDxDDLYe7xDZOvw6UEZvVL5LZMPSKyKLvZqaY+8EPl3VaGEn+ch09AchXk0Jb1/QMjIR7YNxtwP5L8Q==
   dependencies:
-    dyna-count "^1.0.1"
+    dyna-count "^1.1.2"
     dyna-crypt "^1.1.1"
     dyna-disk-memory "^4.0.3"
-    dyna-guid "^1.0.8"
+    dyna-guid "^1.0.10"
     dyna-interfaces "^4.0.6"
     dyna-job-queue "^5.1.1"
     dyna-loops "^1.7.2"
     dyna-object-assign "^2.0.4"
-    dyna-queue-handler "^6.0.7"
+    dyna-queue-handler "^6.1.2"
     dyna-retry "^2.1.0"
     dyna-stringify "^1.0.3"
     dyna-timeout "^1.0.22"
@@ -3442,13 +3435,12 @@ dyna-object-assign@^2.0.4:
   resolved "https://registry.yarnpkg.com/dyna-object-assign/-/dyna-object-assign-2.0.4.tgz#2523ab77e5132f0f261b423d526a5f2e98845507"
   integrity sha512-Z9Jzi1YGymGsjuf7lu/f+ndM29dc8+bJCUVmBnwzDW7VflCrmKW/w1QFylu+teDhdnXmDh/O3+PZkHSRAKAhWA==
 
-dyna-queue-handler@^6.0.7:
-  version "6.0.7"
-  resolved "https://registry.yarnpkg.com/dyna-queue-handler/-/dyna-queue-handler-6.0.7.tgz#d3baacc38bd0c0f3ad1a5c717b77f3338c5930da"
-  integrity sha512-Mu+VKTU3rnt2U7QnyVj4ERyFsohFsf2lnpZwWcTUUTZG9LtSrSsoVtlgtsII5x8XGhEt5bhTL+tszrnbeBXm8A==
+dyna-queue-handler@^6.1.2:
+  version "6.1.3"
+  resolved "https://registry.yarnpkg.com/dyna-queue-handler/-/dyna-queue-handler-6.1.3.tgz#043c2ab80d96aee2a72bb7e4a80ea2784225e577"
+  integrity sha512-nm44V9MpxLHCzVUvk6bQQE3hYkuAmMYcOR4nKDMFSg/Q9kWvJncZ+7+DxwFxPcByzOl0Ps4jrfZYPjzCAAQgFw==
   dependencies:
-    dyna-debounce "^2.0.1"
-    dyna-guid "^1.0.8"
+    dyna-guid "^1.0.10"
     dyna-interfaces "^4.0.6"
     dyna-job-queue "^5.1.1"
 
@@ -6292,11 +6284,6 @@ locate-path@^3.0.0:
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
-
-lodash.debounce@^4.0.8:
-  version "4.0.8"
-  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
-  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 lodash.escape@^4.0.1:
   version "4.0.1"
