@@ -125,7 +125,7 @@ describe('DynaNodeFeederService', () => {
     })
       .then(() => fail('It should fail'))
       .catch(error => {
-        expect(error.data.replyMessage.command).toBe('error/403');
+        expect(error.message).toBe('Access denied');
       })
       .then(() => receiver.stop())
       .then(() => done());
