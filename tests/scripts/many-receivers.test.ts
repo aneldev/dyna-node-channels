@@ -67,7 +67,7 @@ describe('DynaNodeFeederService', () => {
 
   it(`broadcasts one message to many receivers`, async (done) => {
     let receives = 0;
-    const checkAndExit = () => {s
+    const checkAndExit = () => {
       receives++;
       if (receives === RECEIVERS_COUNT) done();
     };
