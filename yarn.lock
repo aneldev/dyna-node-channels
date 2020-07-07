@@ -3386,10 +3386,10 @@ dyna-job-queue@^4.0.1:
   resolved "https://registry.yarnpkg.com/dyna-job-queue/-/dyna-job-queue-4.0.1.tgz#eff572424e6ed78d244e8d8040f4adcf189d7b2b"
   integrity sha512-Z6pdx0UzHgIDg6Mqyt+of5t/HoCHPyoO6yvZry5RWdwLOkeG/drCUgSx22aW+hCqKjzaMv4HQjfe4PdmNqpWXg==
 
-dyna-job-queue@^5.1.1:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/dyna-job-queue/-/dyna-job-queue-5.1.2.tgz#cccf8801cfa3fd8bfde6ea0495fa594cf1f75ef4"
-  integrity sha512-zgVV4cPToBz4ZLvOdsD6ZbuKP7fjV4ATAIJEKQLPWG8LD0LjumCCgGQ9rXe++S9F2FjbxuIQGSmcIE7r48ZexQ==
+dyna-job-queue@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/dyna-job-queue/-/dyna-job-queue-5.1.3.tgz#317caa3245344b748a42a88650919ce41fd26cd1"
+  integrity sha512-yNVk/jhO8mtIRqZ9RnzcJOADdAzF4OGEqxlZ3E0441AlRBgjNf6trvNy2UtKklayTXNaPi7n16eLhtchs8PCEg==
 
 dyna-loops@^1.4.3, dyna-loops@^1.7.2:
   version "1.7.3"
@@ -3410,20 +3410,20 @@ dyna-node-fs@^1.0.2, dyna-node-fs@^1.0.4:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.99:
-  version "0.7.99"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.99.tgz#5102d3cd2484a651bf624fd177cd4010c0a67b07"
-  integrity sha512-of/S+HZPDxDDLYe7xDZOvw6UEZvVL5LZMPSKyKLvZqaY+8EPl3VaGEn+ch09AchXk0Jb1/QMjIR7YNxtwP5L8Q==
+dyna-node@^0.7.100:
+  version "0.7.100"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.100.tgz#713627a4a2e2d7630ac923a49ac8daa38bb4ed5e"
+  integrity sha512-61mhdHPnsxqD32s1sH3UyMPjxWedQV+LZttrpdpSYani/6W0Nf/Ac1uvFNBD+cn5hC3yKhIL5NVh9fEKrDWODw==
   dependencies:
     dyna-count "^1.1.2"
     dyna-crypt "^1.1.1"
     dyna-disk-memory "^4.0.3"
     dyna-guid "^1.0.10"
     dyna-interfaces "^4.0.6"
-    dyna-job-queue "^5.1.1"
+    dyna-job-queue "^5.1.3"
     dyna-loops "^1.7.2"
     dyna-object-assign "^2.0.4"
-    dyna-queue-handler "^6.1.2"
+    dyna-queue-handler "^7.0.1"
     dyna-retry "^2.1.0"
     dyna-stringify "^1.0.3"
     dyna-timeout "^1.0.22"
@@ -3435,14 +3435,13 @@ dyna-object-assign@^2.0.4:
   resolved "https://registry.yarnpkg.com/dyna-object-assign/-/dyna-object-assign-2.0.4.tgz#2523ab77e5132f0f261b423d526a5f2e98845507"
   integrity sha512-Z9Jzi1YGymGsjuf7lu/f+ndM29dc8+bJCUVmBnwzDW7VflCrmKW/w1QFylu+teDhdnXmDh/O3+PZkHSRAKAhWA==
 
-dyna-queue-handler@^6.1.2:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/dyna-queue-handler/-/dyna-queue-handler-6.1.3.tgz#043c2ab80d96aee2a72bb7e4a80ea2784225e577"
-  integrity sha512-nm44V9MpxLHCzVUvk6bQQE3hYkuAmMYcOR4nKDMFSg/Q9kWvJncZ+7+DxwFxPcByzOl0Ps4jrfZYPjzCAAQgFw==
+dyna-queue-handler@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/dyna-queue-handler/-/dyna-queue-handler-7.0.1.tgz#3ed2517dbb15e2705baec5f90230fbb398ee74e6"
+  integrity sha512-V6ASFkzgnOhg6LCHRtrHi9z+B0sLe7v5Bh0rL2VTrUcozYghE9nN5B+fhMeGi7dnbwOsvZv/tKAuYzSdj5RwTA==
   dependencies:
     dyna-guid "^1.0.10"
     dyna-interfaces "^4.0.6"
-    dyna-job-queue "^5.1.1"
 
 dyna-retry@^2.1.0:
   version "2.1.3"
