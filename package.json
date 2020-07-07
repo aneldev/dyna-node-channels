@@ -50,7 +50,7 @@
   "author": "Anel dev",
   "license": "MIT",
   "dependencies": {
-    "dyna-node": "^0.7.100"
+    "dyna-node": "^0.7.102"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

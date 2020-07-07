@@ -3410,10 +3410,10 @@ dyna-node-fs@^1.0.2, dyna-node-fs@^1.0.4:
   dependencies:
     dyna-interfaces "^4.0.0"
 
-dyna-node@^0.7.100:
-  version "0.7.100"
-  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.100.tgz#713627a4a2e2d7630ac923a49ac8daa38bb4ed5e"
-  integrity sha512-61mhdHPnsxqD32s1sH3UyMPjxWedQV+LZttrpdpSYani/6W0Nf/Ac1uvFNBD+cn5hC3yKhIL5NVh9fEKrDWODw==
+dyna-node@^0.7.102:
+  version "0.7.102"
+  resolved "https://registry.yarnpkg.com/dyna-node/-/dyna-node-0.7.102.tgz#b738bafb74caed1d56f16c1aa8e334f0c3067a67"
+  integrity sha512-DpW9Q8wbdmgB+t1KIVEaie4JAlTHJkK8YELaj9QMjZ2qo6k3P+2RIa9htCKsL81fia34kMGjLk3iJaaDa8BBww==
   dependencies:
     dyna-count "^1.1.2"
     dyna-crypt "^1.1.1"
